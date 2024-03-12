@@ -7,19 +7,27 @@
 class Simon : public QObject {
     Q_OBJECT
 private:
-    std::string pattern = "";
+    std::string botPattern = "";
+    int playerPatternCounter = 0;
 
 public slots:
-    bool isPlayerPatternCorrect(std::string pattern);
     void startGame();
+    void addBlueToPlayerPattern();
+    void addRedToPlayerPattern();
+
 
 signals:
     void toggleStart(bool);
+    void toggleButtons(bool);
+    void showDeathScreen(bool);
+    void incrementProgressBar(int);
 
 public:
+    std::string playerPattern = "";
     explicit Simon(QObject * parent = nullptr);
     void generateNextPattern();
-    void resetPattern();
+    bool isPlayerPatternCorrect();
+    void resetGame();
     bool isGameOver = false;
     bool isGameStart = false;
     bool playersTurn = false;

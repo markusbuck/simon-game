@@ -8,21 +8,21 @@ void Simon::generateNextPattern() {
     int randNum = std::rand() % 100;
 
     if(randNum >= 51) {
-        this->pattern.append("R");
+        this->botPattern.append("R");
     }
 
     else {
-        this->pattern.append("L");
+        this->botPattern.append("B");
     }
 }
 
-bool Simon::isPlayerPatternCorrect(std::string pattern) {
-    if(pattern.length() > this->pattern.length()) {
+bool Simon::isPlayerPatternCorrect() {
+    if(this->playerPattern.length() > this->botPattern.length()) {
         return false;
     }
 
-    for(int i = 0; i < this->pattern.length(); i++) {
-        if(pattern.at(i) != this->pattern.at(i)) {
+    for(int i = 0; i < this->botPattern.length(); i++) {
+        if(this->playerPattern.at(i) != this->botPattern.at(i)) {
             return false;
         }
     }
@@ -30,12 +30,53 @@ bool Simon::isPlayerPatternCorrect(std::string pattern) {
     return true;
 }
 
-void Simon::resetPattern() {
-    this->pattern = "";
+void Simon::resetGame() {
+    this->botPattern = "";
+    this->playerPattern = "";
+    this->playerPatternCounter = 0;
 }
 
 void Simon::startGame(){
     isGameStart = true;
     generateNextPattern();
     emit toggleStart(false);
+    emit toggleButtons(true);
+}
+
+void Simon::addBlueToPlayerPattern() {
+    this->playerPattern += "B";
+    bool isCorrectPattern = this->isPlayerPatternCorrect();
+
+    if(!isCorrectPattern) {
+        // emit showDeathScreen(true);
+        // emit toggleButtons(false);
+    }
+
+    this->playerPatternCounter++;
+
+    int percentage = ((double)this->playerPatternCounter/ this->botPattern.length()) * 100;
+    std::cout << isCorrectPattern << std::endl;
+    std::cout << this->playerPattern << std::endl;
+    std::cout << "Percentage: "  << percentage << std::endl;
+
+    emit incrementProgressBar(percentage);
+}
+
+void Simon::addRedToPlayerPattern() {
+    this->playerPattern += "R";
+    bool isCorrectPattern = this->isPlayerPatternCorrect();
+
+    if(!isCorrectPattern) {
+        // emit showDeathScreen(true);
+        // emit toggleButtons(false);
+    }
+
+    this->playerPatternCounter++;
+    int percentage = ((double)this->playerPatternCounter/ this->botPattern.length()) * 100;
+
+    std::cout << isCorrectPattern << std::endl;
+    std::cout << this->playerPattern << std::endl;
+    std::cout << "Percentage: " << percentage << std::endl;
+
+    emit incrementProgressBar(percentage);
 }

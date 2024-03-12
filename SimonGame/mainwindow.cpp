@@ -7,6 +7,7 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    // Disable start button when pressed
     connect(ui->startButton,
             &QPushButton::clicked,
             &simon,
@@ -14,6 +15,16 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
     connect(&simon,
             &Simon::toggleStart,
             ui->startButton,
+            &QPushButton::setEnabled);
+
+    // Enable blue and red buttons
+    connect(&simon,
+            &Simon::toggleButtons,
+            ui->redButton,
+            &QPushButton::setEnabled);
+    connect(&simon,
+            &Simon::toggleButtons,
+            ui->blueButton,
             &QPushButton::setEnabled);
 
     ui->redButton->setStyleSheet(
@@ -25,6 +36,24 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
         QString("QPushButton {background-color: "
                 "rgb(50,50,200);} QPushButton:pressed {background-color: "
                 "rgb(150,150,255);}"));
+
+    connect(ui->blueButton,
+             &QPushButton::clicked,
+             &simon,
+             &Simon::addBlueToPlayerPattern);
+
+    connect(ui->redButton,
+            &QPushButton::clicked,
+            &simon,
+            &Simon::addRedToPlayerPattern);
+
+    connect(&simon,
+            &Simon::incrementProgressBar,
+            ui->progressBar,
+            &QProgressBar::setValue);
+
+    // QTimer::singleShot(200, this, &foo::slotA);
+
 }
 
 MainWindow::~MainWindow()
