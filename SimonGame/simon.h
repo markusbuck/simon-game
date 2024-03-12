@@ -22,6 +22,7 @@ signals:
     void showDeathScreen(bool);
     void incrementProgressBar(int);
 
+
 public:
     std::string playerPattern = "";
     explicit Simon(QObject * parent = nullptr);

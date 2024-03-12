@@ -5,6 +5,8 @@ Simon::Simon(QObject * parent) : QObject(parent) {
 }
 
 void Simon::generateNextPattern() {
+    this->playerPatternCounter = 0;
+
     int randNum = std::rand() % 100;
 
     if(randNum >= 51) {

@@ -14,6 +14,9 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public slots:
+    void updateProgressBar();
+signals:
+    void resetProgressBar();
 
 public:
     MainWindow(Simon& simon, QWidget *parent = nullptr);
