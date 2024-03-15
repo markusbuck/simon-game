@@ -16,6 +16,16 @@ void Simon::generateNextPattern() {
     else {
         this->botPattern.append("B");
     }
+
+    displayBotPattern();
+}
+
+void Simon::displayBotPattern(){
+    std::cout << "in bot" << std::endl;
+    for(int i = 0; i < this->botPattern.length(); i ++){
+        QTimer::singleShot(400 * (i + 1), this, [this, i]{emit lightBotButton(this->botPattern.at(i));});
+    }
+
 }
 
 bool Simon::isPlayerPatternCorrect() {
@@ -23,7 +33,7 @@ bool Simon::isPlayerPatternCorrect() {
         return false;
     }
 
-    for(int i = 0; i < this->botPattern.length(); i++) {
+    for(int i = 0; i < this->playerPattern.length(); i++) {
         if(this->playerPattern.at(i) != this->botPattern.at(i)) {
             return false;
         }

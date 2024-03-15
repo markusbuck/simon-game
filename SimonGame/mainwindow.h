@@ -15,6 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public slots:
     void updateProgressBar();
+    void lightUpButton(char);
 signals:
     void resetProgressBar();
 

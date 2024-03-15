@@ -63,7 +63,10 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             &simon,
             &Simon::generateNextPattern);
 
-    // QTimer::singleShot(200, this, &foo::slotA);
+    connect(&simon,
+            &Simon::lightBotButton,
+            this,
+            &MainWindow::lightUpButton);
 
 }
 
@@ -77,7 +80,30 @@ void MainWindow::updateProgressBar() {
     int currentVal = ui->progressBar->value();
 
     if(currentVal == maxVal) {
-        ui->progressBar->setValue(0);
+        //ui->progressBar->setValue(0);
         emit resetProgressBar();
+    }
+}
+
+void MainWindow::lightUpButton(char buttonLetter){
+    if(buttonLetter == 'R'){
+        ui->redButton->setStyleSheet(
+            QString("QPushButton {background-color: "
+                    "rgb(255,150,150);}"));
+
+        ui->blueButton->setStyleSheet(
+            QString("QPushButton {background-color: "
+                    "rgb(50,50,200);} QPushButton:pressed {background-color: "
+                    "rgb(150,150,255);}"));
+
+    }else if(buttonLetter == 'B'){
+        ui->blueButton->setStyleSheet(
+            QString("QPushButton {background-color: "
+                    "rgb(150,150,255);}"));
+
+        ui->redButton->setStyleSheet(
+            QString("QPushButton {background-color: "
+                    "rgb(200,50,50);} QPushButton:pressed {background-color: "
+                    "rgb(255,150,150);}"));
     }
 }

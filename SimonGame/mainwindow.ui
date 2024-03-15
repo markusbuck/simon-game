@@ -17,14 +17,14 @@
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>330</x>
       <y>360</y>
       <width>100</width>
       <height>32</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>START</string>
     </property>
    </widget>
    <widget class="QPushButton" name="redButton">
@@ -40,7 +40,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="blueButton">
@@ -56,14 +56,14 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string/>
     </property>
    </widget>
    <widget class="QProgressBar" name="progressBar">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>420</y>
+      <x>90</x>
+      <y>390</y>
       <width>581</width>
       <height>111</height>
      </rect>
@@ -79,7 +79,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>37</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>

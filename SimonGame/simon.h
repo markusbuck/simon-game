@@ -1,6 +1,7 @@
 #ifndef SIMON_H
 #define SIMON_H
 #include <QObject>
+#include <QTimer>
 #include <string>
 
 
@@ -21,12 +22,15 @@ signals:
     void toggleButtons(bool);
     void showDeathScreen(bool);
     void incrementProgressBar(int);
+    void lightBotButton(char);
 
 
 public:
+    QTimer *timer;
     std::string playerPattern = "";
     explicit Simon(QObject * parent = nullptr);
     void generateNextPattern();
+    void displayBotPattern();
     bool isPlayerPatternCorrect();
     void resetGame();
     bool isGameOver = false;
