@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPropertyAnimation>
 #include "simon.h"
 
 QT_BEGIN_NAMESPACE
@@ -16,13 +17,18 @@ class MainWindow : public QMainWindow
 public slots:
     void updateProgressBar();
     void lightUpButton(char);
+    void startAnimation();
 signals:
     void resetProgressBar();
+    void restartAnimation();
 
 public:
     MainWindow(Simon& simon, QWidget *parent = nullptr);
     ~MainWindow();
 private:
     Ui::MainWindow *ui;
+
+    QPropertyAnimation *blueAnimation;
+    QPropertyAnimation *redAnimation;
 };
 #endif // MAINWINDOW_H

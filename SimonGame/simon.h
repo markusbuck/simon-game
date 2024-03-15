@@ -13,16 +13,19 @@ private:
 
 public slots:
     void startGame();
+    void startHardGame();
     void addBlueToPlayerPattern();
     void addRedToPlayerPattern();
 
 
 signals:
     void toggleStart(bool);
+    void toggleHard(bool);
     void toggleButtons(bool);
     void showDeathScreen(bool);
     void incrementProgressBar(int);
     void lightBotButton(char);
+    void startAnimation();
 
 
 public:

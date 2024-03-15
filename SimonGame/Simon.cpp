@@ -55,6 +55,14 @@ void Simon::startGame(){
     emit toggleButtons(true);
 }
 
+void Simon::startHardGame(){
+    isGameStart = true;
+    generateNextPattern();
+    emit toggleStart(false);
+    emit toggleHard(false);
+    emit toggleButtons(true);
+}
+
 void Simon::addBlueToPlayerPattern() {
     this->playerPattern += "B";
     bool isCorrectPattern = this->isPlayerPatternCorrect();
