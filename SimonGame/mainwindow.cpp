@@ -9,6 +9,8 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->deathText->setVisible(false);
+
     blueAnimation = new QPropertyAnimation(ui->blueButton, "geometry");
     redAnimation = new QPropertyAnimation(ui->redButton, "geometry");
 
@@ -17,6 +19,7 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             &QPushButton::clicked,
             &simon,
             &Simon::startGame);
+
     connect(&simon,
             &Simon::toggleStart,
             ui->startButton,
@@ -33,10 +36,9 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             &QPushButton::setEnabled);
 
     connect(&simon,
-            &Simon::toggleHard,
+            &Simon::startAnimation,
             this,
             &MainWindow::startAnimation);
-
 
     // Enable blue and red buttons
     connect(&simon,
@@ -59,16 +61,6 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
                 "rgb(50,50,200);} QPushButton:pressed {background-color: "
                 "rgb(150,150,255);}"));
 
-    connect(ui->blueButton,
-             &QPushButton::clicked,
-             &simon,
-             &Simon::addBlueToPlayerPattern);
-
-    connect(ui->redButton,
-            &QPushButton::clicked,
-            &simon,
-            &Simon::addRedToPlayerPattern);
-
     connect(&simon,
             &Simon::incrementProgressBar,
             ui->progressBar,
@@ -90,11 +82,35 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             this,
             &MainWindow::lightUpButton);
 
-    connect(this,
-            &MainWindow::restartAnimation,
+    connect(&simon,
+            &Simon::turnOffBotButton,
             this,
-            &MainWindow::startAnimation);
+            &MainWindow::turnOffButton);
 
+    connect(ui->blueButton,
+            &QPushButton::clicked,
+            &simon,
+            &Simon::addBlueToPlayerPattern);
+
+    connect(ui->redButton,
+            &QPushButton::clicked,
+            &simon,
+            &Simon::addRedToPlayerPattern);
+
+    connect(&simon,
+            &Simon::showDeathScreen,
+            ui->deathText,
+            &QTextBrowser::setVisible);
+
+    connect(&simon,
+            &Simon::resetWindow,
+            this,
+            &MainWindow::resetWindow);
+
+    connect(&simon,
+            &Simon::resetButtonLocation,
+            this,
+            &MainWindow::resetButtonsLocation);
 }
 
 MainWindow::~MainWindow()
@@ -102,14 +118,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::resetButtonsLocation(){
+    ui->redButton->move(60, 70);
+    ui->blueButton->move(410,70);
+}
+
 void MainWindow::updateProgressBar() {
     int maxVal = ui->progressBar->maximum();
     int currentVal = ui->progressBar->value();
 
     if(currentVal == maxVal) {
-        //ui->progressBar->setValue(0);
         emit resetProgressBar();
-        emit restartAnimation();
+        // emit restartAnimation();
     }
 }
 
@@ -119,16 +139,21 @@ void MainWindow::lightUpButton(char buttonLetter){
             QString("QPushButton {background-color: "
                     "rgb(255,150,150);}"));
 
+    }else if(buttonLetter == 'B'){
+        ui->blueButton->setStyleSheet(
+            QString("QPushButton {background-color: "
+                    "rgb(150,150,255);}"));
+    }
+}
+
+void MainWindow::turnOffButton(char buttonLetter){
+    if(buttonLetter == 'B'){
         ui->blueButton->setStyleSheet(
             QString("QPushButton {background-color: "
                     "rgb(50,50,200);} QPushButton:pressed {background-color: "
                     "rgb(150,150,255);}"));
 
-    }else if(buttonLetter == 'B'){
-        ui->blueButton->setStyleSheet(
-            QString("QPushButton {background-color: "
-                    "rgb(150,150,255);}"));
-
+    }else if(buttonLetter == 'R'){
         ui->redButton->setStyleSheet(
             QString("QPushButton {background-color: "
                     "rgb(200,50,50);} QPushButton:pressed {background-color: "
@@ -136,19 +161,24 @@ void MainWindow::lightUpButton(char buttonLetter){
     }
 }
 
-void MainWindow::startAnimation(){
+void MainWindow::startAnimation(int time){
     std::cout << "Animating" << std::endl;
-    blueAnimation ->setDuration(1000);
+    blueAnimation ->setDuration(time);
     blueAnimation->setStartValue(ui->blueButton->geometry());
-    int randBlueX = std::rand() % 500;
-    int randBlueY = std::rand() % 300;
+    int randBlueX = arc4random() % 500;
+    int randBlueY = arc4random() % 300;
     blueAnimation->setEndValue(QRect(randBlueX, randBlueY, ui->blueButton->width(), ui->blueButton->height()));
     blueAnimation->start();
 
-    redAnimation ->setDuration(1000);
+    redAnimation ->setDuration(time);
     redAnimation->setStartValue(ui->redButton->geometry());
-    int randRedX = std::rand() % 500;
-    int randRedY = std::rand() % 300;
+    int randRedX = arc4random() % 500;
+    int randRedY = arc4random() % 300;
     redAnimation->setEndValue(QRect(randRedX, randRedY, ui->redButton->width(), ui->redButton->height()));
     redAnimation->start();
+}
+
+void MainWindow::resetWindow(){
+    ui->startButton->setEnabled(true);
+    ui->hardButton->setEnabled(true);
 }

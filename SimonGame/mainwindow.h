@@ -17,10 +17,13 @@ class MainWindow : public QMainWindow
 public slots:
     void updateProgressBar();
     void lightUpButton(char);
-    void startAnimation();
+    void turnOffButton(char);
+    void startAnimation(int);
+    void resetWindow();
+    void resetButtonsLocation();
+
 signals:
     void resetProgressBar();
-    void restartAnimation();
 
 public:
     MainWindow(Simon& simon, QWidget *parent = nullptr);
