@@ -24,11 +24,9 @@ void Simon::generateNextPattern() {
 }
 
 void Simon::displayBotPattern(){
-    std::cout << "in bot" << std::endl;
     int timer = 400;
     int totalTime = 0;
     for(int i = 0; i < this->botPattern.length(); i ++){
-        std::cout << this->botPattern.at(i) << std::endl;
         totalTime = timer + 400;
 
         QTimer::singleShot(timer, this, [this, i]{emit lightBotButton(this->botPattern.at(i));});
@@ -100,17 +98,12 @@ void Simon::addBlueToPlayerPattern() {
     this->playerPatternCounter++;
 
     int percentage = ((double)this->playerPatternCounter/ this->botPattern.length()) * 100;
-    std::cout << isCorrectPattern << std::endl;
-    std::cout << this->playerPattern << std::endl;
-    std::cout << "Percentage: "  << percentage << std::endl;
 
     emit incrementProgressBar(percentage);
-
 }
 
 void Simon::addRedToPlayerPattern() {
     this->playerPattern += "R";
-    std::cout << this->playerPattern << std::endl;
     bool isCorrectPattern = this->isPlayerPatternCorrect();
 
     if(!isCorrectPattern) {
@@ -120,10 +113,6 @@ void Simon::addRedToPlayerPattern() {
     }
     this->playerPatternCounter++;
     int percentage = ((double)this->playerPatternCounter/ this->botPattern.length()) * 100;
-
-    std::cout << isCorrectPattern << std::endl;
-    std::cout << this->playerPattern << std::endl;
-    std::cout << "Percentage: " << percentage << std::endl;
 
     emit incrementProgressBar(percentage);
 }

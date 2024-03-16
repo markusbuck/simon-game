@@ -25,6 +25,7 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             ui->startButton,
             &QPushButton::setEnabled);
 
+    // Disable hard mode when pressed
     connect(ui->hardButton,
             &QPushButton::clicked,
             &simon,
@@ -35,6 +36,7 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             ui->hardButton,
             &QPushButton::setEnabled);
 
+    // Move the red and blue buttons to a random location
     connect(&simon,
             &Simon::startAnimation,
             this,
@@ -51,16 +53,19 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             ui->blueButton,
             &QPushButton::setEnabled);
 
+    // Make the redButtons color red
     ui->redButton->setStyleSheet(
         QString("QPushButton {background-color: "
                 "rgb(200,50,50);} QPushButton:pressed {background-color: "
                 "rgb(255,150,150);}"));
 
+    // Make the blueButtons color to blue
     ui->blueButton->setStyleSheet(
         QString("QPushButton {background-color: "
                 "rgb(50,50,200);} QPushButton:pressed {background-color: "
                 "rgb(150,150,255);}"));
 
+    // Change the progress bars percentage
     connect(&simon,
             &Simon::incrementProgressBar,
             ui->progressBar,
@@ -77,6 +82,7 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             &simon,
             &Simon::generateNextPattern);
 
+    // Display the bot pressing buttons
     connect(&simon,
             &Simon::lightBotButton,
             this,
@@ -87,21 +93,25 @@ MainWindow::MainWindow(Simon& simon, QWidget *parent)
             this,
             &MainWindow::turnOffButton);
 
+    // Add 'B' to the players input
     connect(ui->blueButton,
             &QPushButton::clicked,
             &simon,
             &Simon::addBlueToPlayerPattern);
 
+    // Add 'R' to the players input
     connect(ui->redButton,
             &QPushButton::clicked,
             &simon,
             &Simon::addRedToPlayerPattern);
 
+    // Show the death screen if the player lost
     connect(&simon,
             &Simon::showDeathScreen,
             ui->deathText,
             &QTextBrowser::setVisible);
 
+    // Reset the game modes, and button locations
     connect(&simon,
             &Simon::resetWindow,
             this,
@@ -129,7 +139,6 @@ void MainWindow::updateProgressBar() {
 
     if(currentVal == maxVal) {
         emit resetProgressBar();
-        // emit restartAnimation();
     }
 }
 
@@ -162,7 +171,6 @@ void MainWindow::turnOffButton(char buttonLetter){
 }
 
 void MainWindow::startAnimation(int time){
-    std::cout << "Animating" << std::endl;
     blueAnimation ->setDuration(time);
     blueAnimation->setStartValue(ui->blueButton->geometry());
     int randBlueX = arc4random() % 500;
