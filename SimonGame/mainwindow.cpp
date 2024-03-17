@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "simon.h"
-#include <iostream>
+#include <QRandomGenerator>
 
 MainWindow::MainWindow(Simon& simon, QWidget *parent)
     : QMainWindow(parent)
@@ -173,15 +173,15 @@ void MainWindow::turnOffButton(char buttonLetter){
 void MainWindow::startAnimation(int time){
     blueAnimation ->setDuration(time);
     blueAnimation->setStartValue(ui->blueButton->geometry());
-    int randBlueX = arc4random() % 500;
-    int randBlueY = arc4random() % 300;
+    int randBlueX = QRandomGenerator::global()->bounded(500);
+    int randBlueY = QRandomGenerator::global()->bounded(300);
     blueAnimation->setEndValue(QRect(randBlueX, randBlueY, ui->blueButton->width(), ui->blueButton->height()));
     blueAnimation->start();
 
     redAnimation ->setDuration(time);
     redAnimation->setStartValue(ui->redButton->geometry());
-    int randRedX = arc4random() % 500;
-    int randRedY = arc4random() % 300;
+    int randRedX = QRandomGenerator::global()->bounded(500);
+    int randRedY = QRandomGenerator::global()->bounded(300);
     redAnimation->setEndValue(QRect(randRedX, randRedY, ui->redButton->width(), ui->redButton->height()));
     redAnimation->start();
 }

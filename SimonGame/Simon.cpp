@@ -1,6 +1,5 @@
 #include "simon.h"
-#include <iostream>
-
+#include <QRandomGenerator>
 Simon::Simon(QObject * parent) : QObject(parent) {
 }
 
@@ -9,8 +8,8 @@ void Simon::generateNextPattern() {
 
     this->playerPatternCounter = 0;
 
-    int randNum = arc4random() % 100;
-
+    int randNum = QRandomGenerator::global()->bounded(101);
+\
     if(randNum >= 51) {
         this->botPattern.append("R");
     }
@@ -26,7 +25,7 @@ void Simon::generateNextPattern() {
 void Simon::displayBotPattern(){
     int timer = 400;
     int totalTime = 0;
-    for(int i = 0; i < this->botPattern.length(); i ++){
+    for(size_t i = 0; i < this->botPattern.length(); i ++){
         totalTime = timer + 400;
 
         QTimer::singleShot(timer, this, [this, i]{emit lightBotButton(this->botPattern.at(i));});
@@ -48,7 +47,7 @@ bool Simon::isPlayerPatternCorrect() {
         return false;
     }
 
-    for(int i = 0; i < this->playerPattern.length(); i++) {
+    for(size_t i = 0; i < this->playerPattern.length(); i++) {
         if(this->playerPattern.at(i) != this->botPattern.at(i)) {
             return false;
         }
