@@ -1,6 +1,5 @@
 #include "simon.h"
-#include <iostream>
-
+#include <QRandomGenerator>
 Simon::Simon(QObject * parent) : QObject(parent) {
 }
 
@@ -9,8 +8,8 @@ void Simon::generateNextPattern() {
 
     this->playerPatternCounter = 0;
 
-    int randNum = arc4random() % 100;
-
+    int randNum = QRandomGenerator::global()->bounded(101);
+\
     if(randNum >= 51) {
         this->botPattern.append("R");
     }
@@ -24,11 +23,9 @@ void Simon::generateNextPattern() {
 }
 
 void Simon::displayBotPattern(){
-    std::cout << "in bot" << std::endl;
     int timer = 400;
     int totalTime = 0;
-    for(int i = 0; i < this->botPattern.length(); i ++){
-        std::cout << this->botPattern.at(i) << std::endl;
+    for(size_t i = 0; i < this->botPattern.length(); i ++){
         totalTime = timer + 400;
 
         QTimer::singleShot(timer, this, [this, i]{emit lightBotButton(this->botPattern.at(i));});
@@ -50,7 +47,7 @@ bool Simon::isPlayerPatternCorrect() {
         return false;
     }
 
-    for(int i = 0; i < this->playerPattern.length(); i++) {
+    for(size_t i = 0; i < this->playerPattern.length(); i++) {
         if(this->playerPattern.at(i) != this->botPattern.at(i)) {
             return false;
         }
@@ -100,17 +97,12 @@ void Simon::addBlueToPlayerPattern() {
     this->playerPatternCounter++;
 
     int percentage = ((double)this->playerPatternCounter/ this->botPattern.length()) * 100;
-    std::cout << isCorrectPattern << std::endl;
-    std::cout << this->playerPattern << std::endl;
-    std::cout << "Percentage: "  << percentage << std::endl;
 
     emit incrementProgressBar(percentage);
-
 }
 
 void Simon::addRedToPlayerPattern() {
     this->playerPattern += "R";
-    std::cout << this->playerPattern << std::endl;
     bool isCorrectPattern = this->isPlayerPatternCorrect();
 
     if(!isCorrectPattern) {
@@ -120,10 +112,6 @@ void Simon::addRedToPlayerPattern() {
     }
     this->playerPatternCounter++;
     int percentage = ((double)this->playerPatternCounter/ this->botPattern.length()) * 100;
-
-    std::cout << isCorrectPattern << std::endl;
-    std::cout << this->playerPattern << std::endl;
-    std::cout << "Percentage: " << percentage << std::endl;
 
     emit incrementProgressBar(percentage);
 }
